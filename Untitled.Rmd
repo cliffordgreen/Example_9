@@ -1,0 +1,44 @@
+---
+title: "Pepsi_V"
+output: md document
+---
+
+In this file using the code provided in the excersies I found a stock that was less volitile than the example.
+
+```{r }
+PEPdata <- get.hist.quote('pep',quote="Close")
+length(PEPdata)
+PEPret <- log(lag(PEPdata))-log(PEPdata)
+PEPvol <- sd(PEPret) * sqrt(250) * 100
+PEPvol 
+
+PEPVol <- function(d, logrets){ 
+  var=0 
+  lam= 0 
+  varlist <- c() 
+  for(r in logrets){
+    lam = lam*(1 - 1/d) + 1
+    var = (1-1/lam)*var + (1/lam)*r^2
+    varlist <- c(varlist,var)} 
+  sqrt(varlist)}
+
+PEPvolest <- PEPVol(10,PEPret)
+PEPvolest2 <- PEPVol(30,PEPret)
+PEPvolest3 <- PEPVol(100,PEPret)
+
+plot(PEPvolest, type="l")
+lines(PEPvolest2, type="l", col="red")
+lines(PEPvolest3, type="l", col="blue")
+
+```
+
+
+
+```{r }
+plot(PEPvolest, type="l")
+lines(PEPvolest2, type="l", col="red")
+lines(PEPvolest3, type="l", col="blue")
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
